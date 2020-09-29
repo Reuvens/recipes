@@ -1,0 +1,146 @@
+body {
+  background-color: #89CFF0;
+}
+
+.logo {
+  width: 100%;
+}
+
+#logo-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  
+}
+
+.header {
+  background-color: black;
+  color: azure;
+  font-size: 26px;
+  padding: 13px;
+  text-align: center;
+}
+
+.header p {
+    margin: 0px;
+}
+
+.content {
+  overflow: auto;
+  padding-left: 40px;
+  padding-top: 5px;
+  text-align: right;
+}
+
+.sidebar {
+  float: right;
+  width: 25%;
+}
+
+.sidebar_menu {
+  background-color: black;
+  color: azure;
+  float: right;
+  width: 100%;
+  padding: 0 10px 10px 0;
+  font-size: 18px;
+}
+
+a {
+	color: #89CFF0;
+}
+
+a:visited{
+  color: #89CFF0;
+}
+
+
+/* Tree view (Expandable list) based on:  
+  https://www.w3schools.com/howto/howto_js_treeview.asp
+*/
+ul, #recipe_list {
+  list-style-type: none;
+}
+
+#recipe_list {
+  margin: 0;
+  padding: 0;
+}
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+.caret::before {
+  content: "\25C0";
+  color: azure;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  -ms-transform: rotate(270deg); /* IE 9 */
+  -webkit-transform: rotate(270deg); /* Safari */'
+  transform: rotate(270deg);  
+}
+
+.nested {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+#mom {
+  width: 80%;
+  padding: 10%;
+  background-color: #89CFF0;
+  /* border-radius: 50%; */
+}
+.body {
+  background-color:azure;
+  float: left;
+  width: 70%;
+  padding: 10px;
+  margin-bottom: 60px;
+}
+
+#r_name {
+  font-size: 40px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: darkblue;
+}
+.r_header {
+  font-size: 20px;
+  color: darkblue;
+  font-weight: bold;
+}
+
+#r_ingredients {
+  white-space: pre-wrap;
+}
+
+#r_directions {
+  white-space: pre-wrap;
+}
+
+.footer {
+  background-color: black;
+  color: azure;
+
+  text-align: right;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-content {
+  padding-right: 20px;
+}

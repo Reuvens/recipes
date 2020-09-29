@@ -1,0 +1,54 @@
+<!-- HTML expanding (Emmet):
+  - type html:5 and press Tab;
+  - type div>h1#header and press Tab;
+-->
+<!doctype html>
+<html dir="rtl" lang="he">
+  <header>
+	  <link rel="stylesheet" href="style.css">
+    <!--script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	  <script src="script.js"></script>
+    <!--script src="dummy_results.js"</script-->
+    <script src="https://spreadsheets.google.com/feeds/cells/1VsPOSuFgW747FhMscNVQVB0rwO7_U4jNH9v-0VAPDgo/1/public/values?alt=json-in-script&callback=doData"></script>
+
+  </header>
+
+  <body>
+    <div class="logo">
+      <img id="logo-image" src="https://image.shutterstock.com/image-photo/full-banner-wide-food-background-260nw-1037455726.jpg">
+    </div>
+
+    <div class="header"> 
+      <p>אתר המתכונים של סבתא רחל</p>
+    </div>
+
+    <div class="content"> 
+      <div class="sidebar">
+        <div class="sidebar_menu"> 
+          <p> קטגוריות </p>
+          <ul id="recipe_list">
+      	  </ul>
+        </div>
+          <img id="mom" src="assets/mom.jpg">
+        </div>
+
+      <div class="body"> 
+        <div id="data">
+          <div id="r_name"></div>
+          <p class = "r_header">מרכיבים</p>
+          <div id="r_ingredients"></div>
+          <p class = "r_header">הוראות הכנה</p>
+          <div id="r_directions"></div>
+          <p class = "r_header">מקור</p>
+          <div id="r_origin"></div> 
+        </div>
+      </div>
+    </div>  <!-- "content" -->
+    <div class="footer"> 
+      <p class="footer-content">ראובן סייג</p>
+    </div>
+
+  </body>
+</html>
