@@ -6,7 +6,8 @@
 // JS do data: https://spreadsheets.google.com/feeds/cells/1VsPOSuFgW747FhMscNVQVB0rwO7_U4jNH9v-0VAPDgo/1/public/values?alt=json-in-script&callback=doData
 
 class Recipe {
-  constructor(name, categrory, ingredients, directions, origin) {
+  constructor(id, name, categrory, ingredients, directions, origin) {
+	this.id = id;
     this.name = name;
     this.categrory = categrory;
     this.ingredients = ingredients;
@@ -23,6 +24,7 @@ function doData(json) {
 function loadRecipes() {
   var data = spData;
   var recipes_dict = {};
+  var recipe_id = 1;
 
   // data per column:
   // 0. timestamp (ignored)
@@ -43,19 +45,19 @@ function loadRecipes() {
     if (! recipes_dict[categrory]) {
       recipes_dict[categrory] = [];
     }
-    recipes_dict[categrory].push(new Recipe(name, categrory, ingredients, directions, recipeOrigin));
+    recipes_dict[categrory].push(new Recipe(recipe_id++, name, categrory, ingredients, directions, recipeOrigin));
   }
 
   return recipes_dict;
 }
 
-function showRecipe(name) {
+function showRecipe(recipe_id) {
 
   for (category in recipes_dict) {
     var recipes_for_category = recipes_dict[category];
     for (item in recipes_for_category) {
       var recipe = recipes_for_category[item];
-      if (recipe.name == name) {
+      if (recipe.id == recipe_id) {
         // console.log(recipe);
         $("#r_name").html(recipe.name);
         $("#r_ingredients").html(recipe.ingredients);
@@ -71,8 +73,8 @@ function showRecipeList(recipes_dict) {
     var category_html = "<li><span class='caret'>" + category + "</span>";
     category_html += "<ul class='nested'>";
     for (item in recipes_dict[category]) {
-      var recipe_name = recipes_dict[category][item].name;
-      var recipe_link = "<li id='" + recipe_name + "'><a href=# onclick='showRecipe(\"" + recipe_name + "\")'>" + recipe_name + "</a></li>";
+      var recipe_id = recipes_dict[category][item].id;
+      var recipe_link = "<li id='" + recipe_id + "'><a href=# onclick='showRecipe(\"" + recipe_id + "\")'>" + recipes_dict[category][item].name + "</a></li>";
 	  
       category_html += recipe_link;
     }
@@ -99,6 +101,6 @@ $(document).ready(function () {
   // readData($('#data'));
   recipes_dict = loadRecipes();
   showRecipeList(recipes_dict);
-  showRecipe("קובה מטוגנת מבורגול");
+  showRecipe(2);
   setupTogglers();
 });
