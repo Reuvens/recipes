@@ -101,6 +101,6 @@ $(document).ready(function () {
   // readData($('#data'));
   recipes_dict = loadRecipes();
   showRecipeList(recipes_dict);
-  showRecipe(2);
+  showRecipe(4);
   setupTogglers();
 });
