@@ -6,8 +6,8 @@
 // JS do data: https://spreadsheets.google.com/feeds/cells/1VsPOSuFgW747FhMscNVQVB0rwO7_U4jNH9v-0VAPDgo/1/public/values?alt=json-in-script&callback=doData
 
 class Recipe {
-  constructor(id, name, categrory, ingredients, directions, origin) {
-	this.id = id;
+  constructor(timestamp, name, categrory, ingredients, directions, origin) {
+	this.timestamp = timestamp;
     this.name = name;
     this.categrory = categrory;
     this.ingredients = ingredients;
@@ -24,10 +24,9 @@ function doData(json) {
 function loadRecipes() {
   var data = spData;
   var recipes_dict = {};
-  var recipe_id = 1;
 
   // data per column:
-  // 0. timestamp (ignored)
+  // 0. timestamp
   // 1. name
   // 2. category
   // 3. ingredients 
@@ -36,6 +35,7 @@ function loadRecipes() {
   var numColumns = 6;
   // skipping row 1 which is the titles
   for (var rowStart = numColumns; rowStart < data.length; rowStart += numColumns) {
+	var timestamp = data[rowStart + 0]["gs$cell"]["$t"];
     var name = data[rowStart + 1]["gs$cell"]["$t"];
     var categrory = data[rowStart + 2]["gs$cell"]["$t"];
     var ingredients = data[rowStart + 3]["gs$cell"]["$t"];
@@ -45,20 +45,22 @@ function loadRecipes() {
     if (! recipes_dict[categrory]) {
       recipes_dict[categrory] = [];
     }
-    recipes_dict[categrory].push(new Recipe(recipe_id++, name, categrory, ingredients, directions, recipeOrigin));
+	
+    var recipe_timestamp = Date.parse(timestamp).getTime()/1000;
+	
+    recipes_dict[categrory].push(new Recipe(recipe_timestamp, name, categrory, ingredients, directions, recipeOrigin));
   }
 
   return recipes_dict;
 }
 
-function showRecipe(recipe_id) {
+function showRecipe(recipe_ts) {
 
   for (category in recipes_dict) {
     var recipes_for_category = recipes_dict[category];
     for (item in recipes_for_category) {
       var recipe = recipes_for_category[item];
-      if (recipe.id == recipe_id) {
-        // console.log(recipe);
+      if (recipe.timestamp == recipe_ts) {
         $("#r_name").html(recipe.name);
         $("#r_ingredients").html(recipe.ingredients);
         $("#r_directions").html(recipe.directions);
@@ -73,20 +75,19 @@ function showRecipeList(recipes_dict) {
     var category_html = "<li><span class='caret'>" + category + "</span>";
     category_html += "<ul class='nested'>";
     for (item in recipes_dict[category]) {
-      var recipe_id = recipes_dict[category][item].id;
-      var recipe_link = "<li id='" + recipe_id + "'><a href=# onclick='showRecipe(\"" + recipe_id + "\")'>" + recipes_dict[category][item].name + "</a></li>";
+		var recipe_ts = recipes_dict[category][item].timestamp;
+      var recipe_link = "<li id='" + recipe_ts + "'><a href=#?recipe_id=" + recipe_ts + " onclick='showRecipe(\"" + recipe_ts + "\")'>" + recipes_dict[category][item].name + "</a></li>";
 	  
       category_html += recipe_link;
     }
     category_html += "</ul></li>"
     $('#recipe_list').append(category_html);
-    console.log(category_html);
 
   }
 }
 
 function setupTogglers() {
-	var toggler = document.getElementsByClassName("caret");
+  	var toggler = document.getElementsByClassName("caret");
 	var i;
 
 	for (i = 0; i < toggler.length; i++) {
@@ -97,10 +98,39 @@ function setupTogglers() {
 	}	
 }
 
+// function GetURLParameter(sParam) {
+//     var sPageURL = window.location.search.substring(1);
+// 	console.log(sPageURL);
+//     var sURLVariables = sPageURL.split('&');
+// 	console.log(sURLVariables);
+//
+//     for (var i = 0; i < sURLVariables.length; i++) {
+//         var sParameterName = sURLVariables[i].split('=');
+// 		console.log(sParameterName);
+//         if (sParameterName[0] == sParam) {
+//             return sParameterName[1];
+//         }
+//     }
+// }
+
+function getRecipeIdFromURL() {
+	var str = window.location.href;
+	str = str.substring(str.indexOf("#") + 1);
+	var urlParams = new URLSearchParams(str);
+	console.log(urlParams);
+	var recipe_id = urlParams.get('recipe_id');
+	if (recipe_id == null) { 
+		recipe_id = 1601128017;  // Kobe recipe timestamp: 9/26/2020 16:46:57 in epoc
+	}
+	return recipe_id;
+}
+
 $(document).ready(function () {
-  // readData($('#data'));
-  recipes_dict = loadRecipes();
-  showRecipeList(recipes_dict);
-  showRecipe(4);
-  setupTogglers();
+	recipes_dict = loadRecipes();
+	showRecipeList(recipes_dict);
+
+	var recipe_id = getRecipeIdFromURL();
+	showRecipe(recipe_id);  
+ 	setupTogglers();
+
 });
