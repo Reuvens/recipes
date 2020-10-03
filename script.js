@@ -98,21 +98,6 @@ function setupTogglers() {
 	}	
 }
 
-// function GetURLParameter(sParam) {
-//     var sPageURL = window.location.search.substring(1);
-// 	console.log(sPageURL);
-//     var sURLVariables = sPageURL.split('&');
-// 	console.log(sURLVariables);
-//
-//     for (var i = 0; i < sURLVariables.length; i++) {
-//         var sParameterName = sURLVariables[i].split('=');
-// 		console.log(sParameterName);
-//         if (sParameterName[0] == sParam) {
-//             return sParameterName[1];
-//         }
-//     }
-// }
-
 function getRecipeIdFromURL() {
 	var str = window.location.href;
 	str = str.substring(str.indexOf("#") + 1);
