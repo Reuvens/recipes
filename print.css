@@ -1,0 +1,42 @@
+.category {
+	color:gray;
+	margin-top: 100px;
+}
+
+.recipe_name {
+	color: red;
+}
+
+.recipe_name, h1 {
+	margin: 0px;
+}
+
+.recipe_contributor {
+	margin-bottom: 20px;
+	color: gray;
+}
+
+.recipe_content {
+    overflow: auto;
+	page-break-after: always;
+}
+.recipe_ingredients {
+    float: right;
+    white-space: pre-wrap;
+    width: 25%;
+	background-color: #F5F5F5;
+	color: darkblue;
+	padding-bottom: 8px;
+}
+
+.recipe_ingredients, p {
+	margin-top: 4px;
+}
+
+.recipe_directions {
+    float: right;
+    white-space: pre-wrap;
+    width: 400px;
+	margin-bottom: 100px;
+	margin-right: 100px;
+}
