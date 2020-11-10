@@ -26,21 +26,23 @@ function loadRecipes() {
   var recipes_dict = {};
 
   // data per column:
-  // 0. timestamp
-  // 1. name
-  // 2. category
-  // 3. ingredients 
-  // 4. directions
-  // 5. where this recipe came from
+  // 0. name
+  // 1. category
+  // 2. ingredients 
+  // 3. directions
+  // 4. where this recipe came from
+  // 5. timestamp
+
   var numColumns = 6;
   // skipping row 1 which is the titles
   for (var rowStart = numColumns; rowStart < data.length; rowStart += numColumns) {
-	var timestamp = data[rowStart + 0]["gs$cell"]["$t"];
-    var name = data[rowStart + 1]["gs$cell"]["$t"];
-    var category = data[rowStart + 2]["gs$cell"]["$t"];
-    var ingredients = data[rowStart + 3]["gs$cell"]["$t"];
-    var directions = data[rowStart + 4]["gs$cell"]["$t"];
-    var recipeOrigin = data[rowStart + 5]["gs$cell"]["$t"];
+    var name = data[rowStart + 0]["gs$cell"]["$t"];
+    var category = data[rowStart + 1]["gs$cell"]["$t"];
+    var ingredients = data[rowStart + 2]["gs$cell"]["$t"];
+    var directions = data[rowStart + 3]["gs$cell"]["$t"];
+    var recipeOrigin = data[rowStart + 4]["gs$cell"]["$t"];
+    var timestamp = data[rowStart + 5]["gs$cell"]["$t"];
+
 
     if (! recipes_dict[category]) {
       recipes_dict[category] = [];
