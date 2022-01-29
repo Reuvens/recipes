@@ -1,3 +1,5 @@
+var recipes_dict = null;
+
 
 function showRecipe(recipe_ts) {
 
@@ -50,17 +52,19 @@ function getRecipeIdFromURL() {
 	console.log(urlParams);
 	var recipe_id = urlParams.get('recipe_id');
 	if (recipe_id == null) { 
-		recipe_id = 1601128017;  // Kobe recipe timestamp: 9/26/2020 16:46:57 in epoc
+		recipe_id = 1601313407;  // Kobe recipe timestamp: 9/26/2020 16:46:57 in epoc
 	}
 	return recipe_id;
 }
 
 $(document).ready(function () {
-	recipes_dict = loadRecipes();
-	showRecipeList(recipes_dict);
-
-	var recipe_id = getRecipeIdFromURL();
-	showRecipe(recipe_id);  
- 	setupTogglers();
-
+	var url = "https://sheets.googleapis.com/v4/spreadsheets/1VsPOSuFgW747FhMscNVQVB0rwO7_U4jNH9v-0VAPDgo/values/Form%20Responses%201?alt=json&key=AIzaSyCLfNf36x5vVb3l19oKSw5RpDsKPwCoMnw"
+	$.getJSON(url, function(data) {
+		recipes_dict = loadRecipes(data);
+		showRecipeList(recipes_dict);
+		var recipe_id = getRecipeIdFromURL();
+		showRecipe(recipe_id);  
+ 		setupTogglers();
+		
+	});
 });

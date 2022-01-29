@@ -1,9 +1,13 @@
 // Instructions taken from:
-// https://gist.github.com/terrywbrady/a03b25fe42959b304b1e
-// published page: https://docs.google.com/spreadsheets/d/e/2PACX-1vT3FLCR7TAN-0JBpuVEW0MXtCA6TAWdBjEKKXjfzqvFhK259ymNKyHxh3Xc2D5P5dGY5HEfeprZDWGY/pubhtml
-// rss feed: https://spreadsheets.google.com/feeds/cells/1VsPOSuFgW747FhMscNVQVB0rwO7_U4jNH9v-0VAPDgo/1/public/values
-// JSON feed: https://spreadsheets.google.com/feeds/cells/1VsPOSuFgW747FhMscNVQVB0rwO7_U4jNH9v-0VAPDgo/1/public/values?alt=json-in-script
-// JS do data: https://spreadsheets.google.com/feeds/cells/1VsPOSuFgW747FhMscNVQVB0rwO7_U4jNH9v-0VAPDgo/1/public/values?alt=json-in-script&callback=doData
+// https://dev.to/marcusatlocalhost/request-google-sheets-json-api-v4-with-php-12ji
+// Full URL:
+// https://sheets.googleapis.com/v4/spreadsheets/1VsPOSuFgW747FhMscNVQVB0rwO7_U4jNH9v-0VAPDgo/values/Form%20Responses%201?key=AIzaSyCLfNf36x5vVb3l19oKSw5RpDsKPwCoMnw
+//
+// Form Responses 1
+// 1VsPOSuFgW747FhMscNVQVB0rwO7_U4jNH9v-0VAPDgo
+// Control API keys and scopes:
+// https://console.cloud.google.com/apis/credentials
+// Privous instructions from: https://gist.github.com/terrywbrady/a03b25fe42959b304b1e
 
 class Recipe {
   constructor(timestamp, name, category, ingredients, directions, origin) {
@@ -16,15 +20,9 @@ class Recipe {
   }
 }
 
-var spData = null;
-function doData(json) {
-  spData = json.feed.entry;
-}
-
-function loadRecipes() {
-  var data = spData;
-  var recipes_dict = {};
-
+function loadRecipes(json) {
+  var data = json.values;
+  var recipes_dict = [];
   // data per column:
   // 1. timestamp
   // 1. name
@@ -33,26 +31,28 @@ function loadRecipes() {
   // 4. directions
   // 5. where this recipe came from
 
-  var numColumns = 6;
-  // skipping row 1 which is the titles
-  for (var rowStart = numColumns; rowStart < data.length; rowStart += numColumns) {
-    var timestamp = data[rowStart + 0]["gs$cell"]["$t"];
-    var name = data[rowStart + 1]["gs$cell"]["$t"];
-    var category = data[rowStart + 2]["gs$cell"]["$t"];
-    var ingredients = data[rowStart + 3]["gs$cell"]["$t"];
-    var directions = data[rowStart + 4]["gs$cell"]["$t"];
-    var recipeOrigin = data[rowStart + 5]["gs$cell"]["$t"];
-
+  // skipping first row (titles)
+  data.shift();
+  
+  data.forEach((element, index) => {
+    // if (index == 0) {
+    //   continue;
+    // }
+    var timestamp = element[0];
+    var name = element[1];
+    var category = element[2];
+    var ingredients = element[3];
+    var directions = element[4];
+    var recipeOrigin = element[5];
 
     if (! recipes_dict[category]) {
       recipes_dict[category] = [];
     }
-	
-    var recipe_timestamp = Date.parse(timestamp).getTime()/1000;
-	
-    recipes_dict[category].push(new Recipe(recipe_timestamp, name, category, ingredients, directions, recipeOrigin));
-  }
+  
+    var recipe_timestamp = new Date(timestamp).getTime()/1000;
+  
+    recipes_dict[category].push(new Recipe(recipe_timestamp, name, category, ingredients, directions, recipeOrigin));    
 
+    });
   return recipes_dict;
 }
-
